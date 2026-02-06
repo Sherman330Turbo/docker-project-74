@@ -3,3 +3,9 @@ services:
     build: .
     volumes:
       - ./app:/app
+      - npm-cache:/.npm
+    environment:
+      npm_config_cache: /.npm
+
+volumes:
+  npm-cache:
