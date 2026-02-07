@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  APP_IMAGE_NAME: sherman330turbo/docker-project-74:prod
+  APP_IMAGE_NAME: sherman330turbo/docker-project-74:latest
 
 jobs:
   build:
