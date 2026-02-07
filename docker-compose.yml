@@ -1,8 +1,10 @@
 services:
   app:
-    build: .
+    image: sherman330turbo/docker-project-74:prod
+    build:
+      context: .
+      dockerfile: Dockerfile.production
     volumes:
-      - ./app:/app
       - npm-cache:/.npm
     environment:
       npm_config_cache: /.npm

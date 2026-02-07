@@ -1,9 +1,8 @@
 setup:
 	docker compose run --rm app make setup
 
-run: setup
-	docker compose up --abort-on-container-exit --exit-code-from app
+run:
+	docker compose -f docker-compose.override.yml up --build --abort-on-container-exit --exit-code-from app
 
 test: setup
-	docker compose -f docker-compose.yml up --abort-on-container-exit --exit-code-from app
-
+	docker compose run --rm app make test
