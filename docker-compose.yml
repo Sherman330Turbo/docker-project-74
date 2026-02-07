@@ -8,6 +8,21 @@ services:
       - npm-cache:/.npm
     environment:
       npm_config_cache: /.npm
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   npm-cache:
