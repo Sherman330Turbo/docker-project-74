@@ -1,0 +1,38 @@
+name: push
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  APP_IMAGE_NAME: sherman330turbo/docker-project-74:prod
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v3
+
+      - name: Run tests
+        run: make test
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build App
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: Dockerfile.production
+          cache-from: type=registry,ref=${{ env.APP_IMAGE_NAME }}
+          cache-to: type=inline
+          push: true
+          tags: ${{ env.APP_IMAGE_NAME }}
