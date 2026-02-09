@@ -4,20 +4,20 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.production
+    command: ["make", "test"]
     volumes:
       - npm-cache:/.npm
     environment:
       npm_config_cache: /.npm
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   db:
     image: postgres:latest
-    restart: always
     shm_size: 128mb
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 5s
